@@ -1,0 +1,16 @@
+# Ignore specific PHP connector file
+connector.php
+
+# Ignore backup and temporary PHP files
+*.php~
+*.php.bak
+*.php.save
+*.php.swp
+*.php.swo
+*.php.old
+*.php.orig
+*.php.save
+*.phps
+
+# Ignore macOS system file
+/.DS_Store
