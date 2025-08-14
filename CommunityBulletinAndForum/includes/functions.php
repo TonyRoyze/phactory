@@ -804,9 +804,8 @@ function renderHeader($current_page = '', $title = 'CommunityHub') {
     echo '</header>';
 }
 
-?>/**
- * Get
- user posts with pagination
+/**
+ * Get user posts with pagination
  */
 function getUserPosts($user_id, $page = 1, $posts_per_page = 10) {
     $db = Database::getInstance();
@@ -1855,18 +1854,13 @@ function getCachedCategories() {
         $db = Database::getInstance();
         
         $query = "
-            SELECT 
-                c.id, c.name, c.description, c.icon, c.color,
-                COUNT(p.id) as actual_post_count,
-                (SELECT CONCAT(u.username, ' - ', p2.title) 
-                 FROM posts p2 
-                 JOIN users u ON p2.user_id = u.id 
-                 WHERE p2.category_id = c.id 
-                 ORDER BY p2.created_at DESC 
-                 LIMIT 1) as latest_post
-            FROM categories c
-            LEFT JOIN posts p ON c.id = p.category_id
-            GROUP BY c.id, c.name, c.description, c.icon, c.color
+            SELECT c.*, 
+                   COUNT(p.id) as actual_post_count,
+                   MAX(p.created_at) as latest_post_date,
+                   (SELECT p2.title FROM posts p2 WHERE p2.category_id = c.id ORDER BY p2.created_at DESC LIMIT 1) as latest_post_title
+            FROM categories c 
+            LEFT JOIN posts p ON c.id = p.category_id 
+            GROUP BY c.id 
             ORDER BY c.id
         ";
         

@@ -5,7 +5,7 @@
  * This file provides additional session management utilities
  */
 
-require_once 'config.php';
+// Config is already included by the main file
 
 /**
  * Initialize session with security checks

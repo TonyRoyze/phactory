@@ -1,7 +1,6 @@
 <?php
 require_once 'includes/config.php';
 require_once 'includes/session.php';
-require_once 'includes/functions.php';
 
 // Initialize session
 initializeSession();
@@ -100,7 +99,7 @@ $flash = getFlashMessage();
                                             <span class="stat-number"><?php echo number_format($category['actual_post_count']); ?></span>
                                             <span class="stat-label">Posts</span>
                                         </div>
-                                        <?php if ($category['latest_post_date']): ?>
+                                        <?php if (!empty($category['latest_post_date'])): ?>
                                             <div class="stat-item">
                                                 <span class="stat-label">Latest:</span>
                                                 <time datetime="<?php echo $category['latest_post_date']; ?>" class="stat-time">
@@ -110,7 +109,7 @@ $flash = getFlashMessage();
                                         <?php endif; ?>
                                     </div>
                                     
-                                    <?php if ($category['latest_post_title']): ?>
+                                    <?php if (!empty($category['latest_post_title'])): ?>
                                         <div class="category-latest-post">
                                             <span class="latest-post-label">Latest post:</span>
                                             <span class="latest-post-title"><?php echo htmlspecialchars($category['latest_post_title']); ?></span>
