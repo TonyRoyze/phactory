@@ -1,0 +1,206 @@
+/* Shadcn-like Theme */
+
+/* General Body Styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    background-color: #f8f8f8; /* Light gray background */
+    color: #333;
+}
+
+/* Header and Navigation */
+header {
+    background-color: #fff; /* White header */
+    color: #333;
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid #eaeaea;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav a {
+    color: #666;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #000;
+}
+
+/* Main Content Area */
+main {
+    padding: 20px 40px;
+}
+
+/* Dashboard Statistics */
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #eaeaea;
+    transition: box-shadow 0.3s;
+}
+
+.stat:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.stat h3 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.stat p {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+    background-color: #fff;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 15px;
+    border-bottom: 1px solid #eaeaea;
+    text-align: left;
+}
+
+th {
+    background-color: #f9f9f9;
+    font-weight: 600;
+    color: #666;
+}
+
+/* Forms and Inputs */
+.form-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid #eaeaea;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus {
+    border-color: #000;
+    outline: none;
+}
+
+/* Buttons */
+button, .button-edit, .button-cancel {
+    background-color: #000; /* Black for primary actions */
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+button:hover, .button-edit:hover, .button-cancel:hover {
+    background-color: #333;
+}
+
+.button-delete {
+    background-color: #e53e3e; /* Red for delete */
+}
+
+.button-delete:hover {
+    background-color: #c53030;
+}
+
+.button-cancel {
+    background-color: #ccc;
+    color: #333;
+}
+
+.button-cancel:hover {
+    background-color: #bbb;
+}
+
+/* Section Headers */
+h2, h3 {
+    color: #333;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 10px;
+    margin-top: 20px;
+    font-weight: 600;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-top: 1px solid #eaeaea;
+    color: #666;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top: 40px;
+}

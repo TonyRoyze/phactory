@@ -1,0 +1,113 @@
+# Composer
+/vendor/
+composer.lock
+
+# Laravel
+.env
+.env.*
+Homestead.yaml
+Homestead.json
+/public/storage
+/storage/*.key
+/vendor/
+/node_modules/
+npm-debug.log
+yarn-error.log
+
+# Symfony
+/app/bootstrap.php.cache
+/app/cache/
+/app/config/parameters.yml
+/app/logs/
+/build/
+/var/
+/vendor/
+/web/bundles/
+/bin/
+/phpunit.xml
+/phpunit.xml.dist
+
+# Zend
+/data/
+*.db
+
+# CakePHP
+/tmp/*
+/logs/*
+/lib/Cake/Console/Templates/skel/tmp/*
+/lib/Cake/Console/Templates/skel/logs/*
+
+# CodeIgniter
+/application/cache/*
+/application/logs/*
+
+# FuelPHP
+/fuel/app/cache/*
+/fuel/app/logs/*
+/fuel/app/tmp/*
+/fuel/vendor/
+/fuel/packages/*/vendor/
+/fuel/packages/*/composer.lock
+/fuel/packages/*/composer.phar
+
+# Phalcon
+/app/cache/*
+/app/logs/*
+
+# Yii
+/assets/
+/protected/runtime/
+/protected/data/*.db
+
+# Drupal
+/sites/default/files/
+/sites/default/settings.php
+/sites/default/settings.local.php
+
+# WordPress
+wp-config.php
+.htaccess
+wp-content/debug.log
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/backup-*/
+
+# Magento
+/app/etc/local.xml
+/var/
+/media/import/
+/media/tmp/
+
+# General
+*.log
+*.cache
+*.tmp
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDEs and editors
+.idea/
+.vscode/
+nbproject/
+*.sublime-workspace
+*.sublime-project
+
+# PHPUnit
+.phpunit.result.cache
+
+# Other environment files
+.env.*
+.env
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+# End Generation Here
+
