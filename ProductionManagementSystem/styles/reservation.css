@@ -1,0 +1,21 @@
+.date,
+.time {
+    position: absolute;
+    top: 0 !important;
+}
+
+.contactus {
+    display: flex;
+    justify-content: space-between;
+    height: 90%;
+    width: 90%;
+}
+
+.contact-info {
+    margin: 30px 0;
+}
+
+.map {
+    height: 300px;
+    width: 350px;
+}
