@@ -1,0 +1,54 @@
+.wrapper.home {
+    width: 96%;
+    height: 700px;
+    margin-top: 80px;
+    transition: width .2s ease;
+    justify-content: normal;
+    align-items: normal;
+}
+
+.list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 50px 0;
+    padding: 0 15px;
+    overflow: scroll;
+}
+
+.item {
+    margin-bottom: 50px;
+    width: 300px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.item img {
+    height: 200px;
+    width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

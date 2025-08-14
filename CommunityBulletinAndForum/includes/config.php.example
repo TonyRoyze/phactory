@@ -1,0 +1,68 @@
+<?php
+
+// Database Configuration
+define("DB_HOST", "localhost");
+define("DB_USER", "your_username");
+define("DB_PASS", "your_password");
+define("DB_NAME", "community_forum");
+
+// Site Configuration
+define("SITE_NAME", "CommunityHub");
+define("SITE_URL", "http://localhost");
+define("SITE_DESCRIPTION", "A community bulletin and forum website");
+
+// Security Configuration
+define("SESSION_LIFETIME", 3600); // 1 hour
+define("CSRF_TOKEN_LIFETIME", 3600); // 1 hour
+define("ENABLE_IP_VALIDATION", false); // Set to true for stricter security
+define("MAX_LOGIN_ATTEMPTS", 5);
+define("LOGIN_LOCKOUT_TIME", 900); // 15 minutes
+define("ENABLE_RATE_LIMITING", true);
+define("RATE_LIMIT_REQUESTS", 100);
+define("RATE_LIMIT_WINDOW", 3600); // 1 hour
+
+// File Upload Configuration
+define("UPLOAD_DIR", "uploads/");
+define("MAX_FILE_SIZE", 5242880); // 5MB
+define("ALLOWED_EXTENSIONS", ["jpg", "jpeg", "png", "gif"]);
+
+// Pagination Configuration
+define("POSTS_PER_PAGE", 10);
+define("COMMENTS_PER_PAGE", 20);
+
+// Cache Configuration
+define("CACHE_DIR", "cache/");
+define("CACHE_LIFETIME", 300); // 5 minutes
+
+// Error Reporting (set to 0 in production)
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Timezone Configuration
+date_default_timezone_set('UTC');
+
+// Initialize security headers
+require_once 'functions.php';
+setSecurityHeaders();
+
+// Start session with secure settings
+if (session_status() === PHP_SESSION_NONE) {
+    session_set_cookie_params([
+        'lifetime' => SESSION_LIFETIME,
+        'path' => '/',
+        'domain' => '',
+        'secure' => false, // Set to true in production with HTTPS
+        'httponly' => true,
+        'samesite' => 'Strict'
+    ]);
+    session_start();
+}
+
+// Set security headers
+setSecurityHeaders();
+
+// Auto-include essential functions
+require_once __DIR__ . '/functions.php';
+require_once __DIR__ . '/cache.php';
+
+?>

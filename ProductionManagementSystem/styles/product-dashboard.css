@@ -1,0 +1,58 @@
+.dashboard {
+    position: relative;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    /*-webkit-backdrop-filter: blur(20px);*/
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    transition: height 0.2s ease;
+    width: 100%;
+    height: 700px;
+    margin: 50px;
+    flex-direction: column;
+    align-items: normal;
+    justify-content: normal;
+    overflow: scroll;
+}
+
+.dashboard .table-name {
+    background: #305975;
+    position: sticky;
+    top: 0;
+    height: 70px;
+    padding: 30px 30px 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+table,
+td,
+th {
+    border-collapse: collapse;
+    padding: 1rem;
+    text-align: center;
+}
+
+thead {
+    background: #305975;
+    position: sticky;
+    top: 70px;
+}
+
+td.desc {
+    text-align: left;
+}
+
+.btn-add {
+    background: #305975;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.btn-actions {
+    background: #305975;
+}
