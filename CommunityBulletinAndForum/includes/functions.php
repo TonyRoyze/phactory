@@ -1,9 +1,8 @@
 <?php
-
-require_once 'database.php';
+// Utility functions for the community forum
 
 /**
- * Sanitize and validate input data
+ * Sanitize input data
  */
 function sanitizeInput($data) {
     $data = trim($data);
