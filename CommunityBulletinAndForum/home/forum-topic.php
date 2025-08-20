@@ -128,7 +128,7 @@ $is_logged_in = $user_id > 0;
         }
         
         .replies-header {
-            color: #fff;
+            color: #000
             font-size: 1.25rem;
             margin-bottom: 20px;
             padding-bottom: 10px;
@@ -254,7 +254,7 @@ $is_logged_in = $user_id > 0;
         }
         
         .breadcrumb-link {
-            color: #fff;
+            color: #000;
             text-decoration: none;
             transition: color 0.2s ease;
         }
@@ -341,7 +341,7 @@ $is_logged_in = $user_id > 0;
                         </div>
                     <?php endwhile; ?>
                 <?php else: ?>
-                    <p style="color: #fff; text-align: center; padding: 20px;">No replies yet. Be the first to reply!</p>
+                    <p style="color: #000 text-align: center; padding: 20px;">No replies yet. Be the first to reply!</p>
                 <?php endif; ?>
             </div>
             
