@@ -1,4 +1,4 @@
-<?php global $conn;
+<?php
 include "./connector.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -7,8 +7,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $repass = $_POST["repassword"];
 
     if ($password == $repass) {
-        $sql = "INSERT INTO user (user_name, pass, user_type) VALUES ('$username', '$password','MEMBER') ";
-        $result = $conn->query($sql);
+        $sql = "INSERT INTO user (user_name, pass, user_type) VALUES (?, ?, 'MEMBER')";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $username, $password);
+        $stmt->execute();
     }
 
     header("location: ./login.php");

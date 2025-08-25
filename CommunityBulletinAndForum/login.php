@@ -1,4 +1,4 @@
-<?php global $conn;
+<?php
 include "./connector.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -6,11 +6,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"];
 
     if (!empty($username) && !empty($password)) {
-        $sql = "SELECT * FROM user WHERE user_name = '$username'";
-        $result = $conn->query($sql);
+        $sql = "SELECT * FROM user WHERE user_name = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
         $user_data = $result->fetch_assoc();
 
-        if ($user_data["pass"] == $password) {
+        if ($user_data && $password == $user_data["pass"]) {
             if ($user_data["user_type"] == "ADMIN") {
                 header(
                     "location: ./admin/manage-news.php?admin_id=$user_data[user_id]"

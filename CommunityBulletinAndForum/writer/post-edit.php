@@ -1,14 +1,16 @@
 <?php
-global $conn;
 include "../connector.php";
 
 $post_id = $_GET["post_id"];
 $writer_id = $_GET["writer_id"];
 
-// Authorization check - ensure user can only edit their own posts
-$auth_sql = "SELECT author_id FROM posts WHERE post_id = $post_id";
-$auth_result = $conn->query($auth_sql);
-$auth_row = $auth_result->fetch_assoc();
+// Authorization check
+$auth_sql = "SELECT author_id FROM posts WHERE post_id = ?";
+$stmt = $conn->prepare($auth_sql);
+$stmt->bind_param("i", $post_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$auth_row = $result->fetch_assoc();
 
 if ($auth_row['author_id'] != $writer_id) {
     die("Unauthorized: You can only edit your own posts.");
@@ -21,9 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $post_type = $_POST["post_type"];
     $category = $_POST["category"];
     
-    $sql = "UPDATE posts SET title='$title', content='$content', post_type='$post_type', category='$category', updated_at=CURRENT_TIMESTAMP WHERE post_id=$post_id";
+    $sql = "UPDATE posts SET title=?, content=?, post_type=?, category=?, updated_at=CURRENT_TIMESTAMP WHERE post_id=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssssi", $title, $content, $post_type, $category, $post_id);
     
-    if ($conn->query($sql) === TRUE) {
+    if ($stmt->execute()) {
         header("Location: writer.php?writer_id=$writer_id");
         exit();
     } else {
@@ -32,8 +36,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 // Get current post data
-$sql = "SELECT * FROM posts WHERE post_id = $post_id";
-$result = $conn->query($sql);
+$sql = "SELECT * FROM posts WHERE post_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $post_id);
+$stmt->execute();
+$result = $stmt->get_result();
 $row = $result->fetch_assoc();
 ?>
 
@@ -43,51 +50,46 @@ $row = $result->fetch_assoc();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Post - Community Bulletin</title>
+    <link rel="stylesheet" href="writer.css">
     <link rel="stylesheet" href="create.css">
 </head>
 <body>
     <?php include "./nav.php"; ?>
-    <div class="content">
-        <h2>Edit Post</h2>
-        
-        <?php if (isset($error)): ?>
-            <div class="error"><?php echo $error; ?></div>
-        <?php endif; ?>
-        
-        <form method="POST" action="">
-            <div class="form-group">
-                <label for="post_type">Post Type:</label>
-                <select name="post_type" id="post_type" required>
+    <div class="content flex-center">
+        <div class="popup w-full">
+            <form class="form" method="POST" action="">
+                <div class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#115DFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-newspaper"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/>
+                        <path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/>
+                    </svg>
+                </div>
+                <div class="note">
+                  <label class="title">Edit Post</label>
+                </div>
+                
+                <?php if (isset($error)): ?>
+                    <div class="error"><?php echo $error; ?></div>
+                <?php endif; ?>
+                
+                <select name="post_type" class="input_field" required>
                     <option value="BULLETIN" <?php echo ($row['post_type'] == 'BULLETIN') ? 'selected' : ''; ?>>Bulletin Post</option>
                     <option value="FORUM" <?php echo ($row['post_type'] == 'FORUM') ? 'selected' : ''; ?>>Forum Topic</option>
                 </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="category">Category:</label>
-                <select name="category" id="category" required>
+                
+                <select name="category" class="input_field" required>
                     <option value="General" <?php echo ($row['category'] == 'General') ? 'selected' : ''; ?>>General</option>
                     <option value="Events" <?php echo ($row['category'] == 'Events') ? 'selected' : ''; ?>>Events</option>
                     <option value="Marketplace" <?php echo ($row['category'] == 'Marketplace') ? 'selected' : ''; ?>>Marketplace</option>
                     <option value="Discussions" <?php echo ($row['category'] == 'Discussions') ? 'selected' : ''; ?>>Discussions</option>
                 </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="title">Title:</label>
-                <input type="text" name="title" id="title" value="<?php echo htmlspecialchars($row['title']); ?>" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="content">Content:</label>
-                <textarea name="content" id="content" rows="10" required><?php echo htmlspecialchars($row['content']); ?></textarea>
-            </div>
-            
-            <div class="form-actions">
+                
+                <input type="text" name="title" class="input_field" value="<?php echo htmlspecialchars($row['title']); ?>" required>
+                
+                <textarea name="content" class="textarea_field" rows="10" required><?php echo htmlspecialchars($row['content']); ?></textarea>
+                
                 <button type="submit" class="submit">Update Post</button>
-                <a href="writer.php?writer_id=<?php echo $writer_id; ?>" class="cancel">Cancel</a>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </body>
 </html>

@@ -1,4 +1,4 @@
-<?php global $conn;
+<?php
 include "../connector.php";
 
 $username = "";
@@ -12,22 +12,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"];
     $repass = $_POST["repassword"];
 
-    if ($password == $repass) {
-        $sql =
-            /** @lang text */
-            "UPDATE user " .
-            "SET user_name = '$username', user_type = '$user_type', pass = '$password' " .
-            "WHERE user_id = '$user_id'";
-        $result = $conn->query($sql);
+    if (!empty($password) && $password == $repass) {
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $sql = "UPDATE user SET user_name = ?, user_type = ?, pass = ? WHERE user_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssi", $username, $user_type, $hashed_password, $user_id);
+    } else {
+        $sql = "UPDATE user SET user_name = ?, user_type = ? WHERE user_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssi", $username, $user_type, $user_id);
     }
+    $stmt->execute();
+
     $admin_id = $_GET["admin_id"];
     header("location: ./manage-users.php?admin_id=$admin_id");
 }
 
 if (isset($_GET["user_id"])) {
     $user_id = $_GET["user_id"];
-    $sql = "SELECT * FROM user WHERE user_id='$user_id '";
-    $result = $conn->query($sql);
+    $sql = "SELECT * FROM user WHERE user_id=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
     $row = $result->fetch_assoc();
 
     $username = $row["user_name"];
@@ -63,9 +70,9 @@ if (isset($_GET["user_id"])) {
                 <option value="ADMIN" <?php echo ($user_type == 'ADMIN') ? 'selected' : ''; ?>>Admin</option>
                 <option value="MEMBER" <?php echo ($user_type == 'MEMBER') ? 'selected' : ''; ?>>Community Member</option>
             </select>
-            <input placeholder="Enter password" title="Enter password"  name="password" type="password" class="input_field" required>
-            <input placeholder="Enter password again" title="Enter password again"  name="repassword" type="password" class="input_field" required>
-            <button class="submit">Update Member</button>
+            <input placeholder="Enter new password" title="Enter new password"  name="password" type="password" class="input_field">
+            <input placeholder="Enter new password again" title="Enter new password again"  name="repassword" type="password" class="input_field">
+            <button class="submit" style="width: 100%">Update Member</button>
           </form>
         </div>
     </div>

@@ -1,4 +1,4 @@
-<?php global $conn;
+<?php
 include "../connector.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -8,8 +8,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $repass = $_POST["repassword"];
 
     if ($password == $repass) {
-        $sql = "INSERT INTO user (user_name, pass, user_type) VALUES ('$username', '$password','$user_type')";
-        $result = $conn->query($sql);
+        $sql = "INSERT INTO user (user_name, pass, user_type) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sss", $username, $password, $user_type);
+        $stmt->execute();
     }
 
     $admin_id = $_GET["admin_id"];
@@ -47,7 +49,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </select>
             <input placeholder="Enter password" title="Enter password"  name="password" type="password" class="input_field" required>
             <input placeholder="Enter password again" title="Enter password again"  name="repassword" type="password" class="input_field" required>
-            <button class="submit">Add Member</button>
+            <button class="submit" style="width: 100%">Add Member</button>
+
           </form>
         </div>
     </div>
