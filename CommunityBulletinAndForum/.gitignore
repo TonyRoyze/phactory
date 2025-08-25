@@ -1,5 +1,5 @@
 # Ignore specific PHP connector file
-config.php
+connector.php
 
 # Ignore backup and temporary PHP files
 *.php~
@@ -14,10 +14,5 @@ config.php
 
 # Ignore macOS system file
 /.DS_Store
+
 .kiro/
-.vscode/
-cache/
-
-
-PERFORMANCE_OPTIMIZATIONS.md
-TESTING_SUMMARY.md

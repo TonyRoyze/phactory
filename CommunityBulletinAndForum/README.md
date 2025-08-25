@@ -1,163 +1,87 @@
-# CommunityHub
+# Community Bulletin & Forum
 
-A modern, responsive community forum and bulletin board system built with PHP and MySQL. CommunityHub enables local communities to connect, share information, and engage in meaningful discussions.
+## Overview
 
-## 🌟 Features
+Community Bulletin & Forum is a PHP-based platform for community interaction and information sharing. It allows community members to create bulletin posts, start forum discussions, and engage in conversations across different categories.
 
-### Core Functionality
-- **Community Categories**: Organized discussion areas including bulletins, general discussion, local events, help & support, marketplace, and social corner
-- **User Management**: Complete registration, authentication, and profile system with avatars and bios
-- **Post System**: Create, view, and interact with posts including likes and comments
-- **Real-time Features**: Trending topics, community statistics, and recent activity tracking
-- **Search & Discovery**: Full-text search across posts and users with advanced filtering
-- **Events System**: Community event creation and management
-- **Mobile-Responsive**: Fully responsive design optimized for all devices
+## Features
 
-### Technical Features
-- **Performance Optimized**: Built-in caching system and performance monitoring
-- **Security First**: CSRF protection, password hashing, and prepared statements
-- **Accessibility**: WCAG 2.1 AA compliant with semantic HTML and ARIA labels
-- **AJAX-Powered**: Dynamic content loading without page refreshes
-- **SEO Friendly**: Clean URLs and optimized meta tags
+- Create bulletin posts for announcements, events, and marketplace items
+- Start and participate in forum discussions
+- Organize content by categories (General, Events, Marketplace, Discussions)
+- User authentication and profile management
+- Admin panel for content and user management
+- Reply system for forum topics
+- Simple and clean community-focused interface
 
-## 🚀 Quick Start
+## Getting Started
 
 ### Prerequisites
-- PHP 7.4 or higher
-- MySQL 5.7 or higher
-- Web server (Apache/Nginx)
-- Modern web browser
+
+- PHP 7.0 or higher
+- A web server (e.g., Apache, Nginx)
+- MySQL or compatible database (if using database features)
 
 ### Installation
 
-1. **Clone the repository:**
-   ### For Linux (Ubuntu/Debian):
+1. **Download or clone the repository:**
+   - Download the project files to your web server directory
+   - Ensure all files are in the correct structure as shown in the File Structure section
+2. **Copy files to your web server directory.**
 
-   ```bash
-   # Install SVN if not already installed
-   sudo apt-get update
-   sudo apt-get install subversion
+3. **Configure database connection:**
+   - Create a `connector.php` file in the project root with the following content:
+     ```php
+     <?php
 
-   # Checkout the repository
-   svn checkout https://github.com/TonyRoyze/phactory
+     $dbServerName = "localhost";
+     $dbUserName = "root";
+     $dbPassword = "";
+     $dbName = "community_bulletin_db";
 
-   # To get only a specific folder from the repository, use:
-   svn checkout https://github.com/TonyRoyze/phactory/CommunityBulletinAndForum
-   ```
+     $conn = mysqli_connect($dbServerName, $dbUserName, $dbPassword, $dbName);
 
-   ### For Windows:
+     if ($conn->connect_error) {
+         die("Connection Failed" . $conn->connect_error);
+     }
+     ?>
+     ```
+   - Update the database credentials in `connector.php` if your setup is different.
 
-   1. Download and install [TortoiseSVN](https://tortoisesvn.net/downloads.html) or [SlikSVN](https://sliksvn.com/download/).
-   2. After installation, open **Command Prompt** (for SlikSVN) or use the right-click context menu (for TortoiseSVN).
+4. **Set appropriate permissions:**
+   - Ensure the web server can write to any upload or cache directories if used.
 
-   **Using Command Prompt (SlikSVN):**
-   ```cmd
-   svn checkout https://github.com/TonyRoyze/phactory
-   svn checkout https://github.com/TonyRoyze/phactory/CommunityBulletinAndForum
-   ```
+### Usage
 
-   **Using TortoiseSVN:**
-   - Right-click in the folder where you want to download the repository.
-   - Select **SVN Checkout...**
-   - Enter `https://github.com/TonyRoyze/phactory` as the URL of repository.
-   - Click **OK**.
+- Access the application via your web browser at `http://localhost/8000` or your server's URL.
+- Register as a community member to create posts and participate in discussions.
+- Admins can manage all content and users through the admin panel.
 
-   ### For macOS:
+## File Structure
 
-   ```bash
-   # Install SVN using Homebrew if not already installed
-   brew install svn
+- `index.php` - Main entry point (redirects to community home)
+- `home/community.php` - Community bulletin and forum home page
+- `home/forum-topic.php` - Individual forum topic view with replies
+- `writer/` - Community member interface for creating and managing posts
+- `admin/` - Administrative interface for content and user management
+- `connector.php` - Database configuration file
+- `community_bulletin_db.sql` - Database schema
+- `.gitignore` - Git ignore rules
 
-   # Checkout the repository
-   svn checkout https://github.com/TonyRoyze/phactory
+## Categories
 
-   # To get only a specific folder from the repository, use:
-   svn checkout https://github.com/TonyRoyze/phactory/CommunityBulletinAndForum
-   ```
+The platform supports four main content categories:
+- **General**: Community announcements and general information
+- **Events**: Community events, meetings, and activities
+- **Marketplace**: Buy/sell/trade items within the community
+- **Discussions**: Open discussions and questions
 
-2. **Database Setup:**
-   ```bash
-   # Create database and import schema
-   mysql -u root -p
-   CREATE DATABASE community_forum;
-   exit
-   
-   # Import the database schema
-   mysql -u root -p community_forum < database.sql
-   ```
+## Design Notes
 
-3. **Configure the application:**
-   - Copy `includes/config.php.example` to `includes/config.php`
-   - Update database credentials and site settings:
-   ```php
-   // Database Configuration
-   define('DB_HOST', 'localhost');
-   define('DB_USER', 'your_username');
-   define('DB_PASS', 'your_password');
-   define('DB_NAME', 'community_forum');
-   ```
-
-4. **Set permissions:**
-   ```bash
-   # Make cache directory writable
-   chmod 755 cache/
-   chmod 644 .htaccess
-   ```
-
-5. **Start development server:**
-   ```bash
-   # Using PHP built-in server
-   php -S localhost:8000
-   
-   # Or configure your web server to point to the project directory
-   ```
-
-6. **Access the application:**
-   - Open `http://localhost:8000` in your browser
-   - Register a new account or use the demo credentials
-
-## 📁 Project Structure
-
-```
-/
-├── api/                    # AJAX endpoints and API routes
-├── css/                    # Stylesheets (theme.css, style.css)
-├── js/                     # JavaScript modules and components
-├── includes/               # PHP utilities and configuration
-│   ├── config.php         # Database and site configuration
-│   ├── database.php       # Database abstraction layer
-│   ├── functions.php      # Core business logic
-│   └── session.php        # Session management
-├── admin/                  # Administrative tools
-├── scripts/                # Maintenance and utility scripts
-├── cache/                  # Application cache directory
-├── templates/              # Reusable template components
-├── index.php              # Homepage
-├── forum.php              # Category and topic browsing
-├── post.php               # Individual post view
-├── create-post.php        # Post creation form
-├── login.php              # User authentication
-├── register.php           # User registration
-├── profile.php            # User profile management
-├── search.php             # Search functionality
-└── database.sql           # Database schema and sample data
-```
-
-## 🛠️ Technology Stack
-
-- **Backend**: PHP 7.4+ with MySQLi
-- **Database**: MySQL with full-text search indexes
-- **Frontend**: HTML5, CSS3, Vanilla JavaScript (ES6+)
-- **Icons**: Font Awesome 6.0.0
-- **Architecture**: MVC-style with separation of concerns
-- **Security**: CSRF protection, prepared statements, secure sessions
-
-## 🔧 Development
-
-### Code Standards
-- **PHP**: PSR-12 coding standards, camelCase for functions
-- **JavaScript**: ES6+ features, modular class-based architecture
-- **CSS**: BEM-like naming, CSS custom properties for theming
-- **Security**: Always use prepared statements, validate/sanitize input
+The platform uses a modern, image-free design with:
+- Gradient backgrounds instead of image dependencies
+- Category-based color coding for visual organization
+- Clean, text-focused content presentation
+- Responsive design that works on all devices
 
 

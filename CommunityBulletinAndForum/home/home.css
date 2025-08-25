@@ -1,0 +1,431 @@
+/* Reset default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Minimal background for the entire page */
+body {
+    background: #f8fafc;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #1e293b;
+}
+
+/* Fullscreen Welcome Animation */
+.welcome-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #ffcc00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeOut 3s ease-out forwards;
+}
+
+.welcome-animation h1 {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+/* Minimal navbar */
+.navbar {
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .logo {
+    color: #1e293b;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links li {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+}
+
+.nav-links a {
+    color: #64748b;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.nav-links a:hover {
+    color: #1e293b;
+    background-color: #f1f5f9;
+}
+
+.nav-links a.active {
+    color: #3b82f6;
+    background-color: #eff6ff;
+    font-weight: 600;
+}
+
+.login-btn {
+    font: inherit;
+    background-color: #f0f0f0;
+    border: 0;
+    color: #242424;
+    border-radius: 0.5em;
+    font-size: 1.35rem;
+    padding: 0.375em 1em;
+    font-weight: 600;
+    text-shadow: 0 0.0625em 0 #fff;
+    box-shadow: inset 0 0.0625em 0 0 #f4f4f4, 0 0.0625em 0 0 #efefef,
+        0 0.125em 0 0 #ececec, 0 0.25em 0 0 #e0e0e0, 0 0.3125em 0 0 #dedede,
+        0 0.375em 0 0 #dcdcdc, 0 0.425em 0 0 #cacaca, 0 0.425em 0.5em 0 #cecece;
+    transition: 0.15s ease;
+    cursor: pointer;
+}
+
+.login-btn:active {
+    translate: 0 0.225em;
+    box-shadow: inset 0 0.03em 0 0 #f4f4f4, 0 0.03em 0 0 #efefef,
+        0 0.0625em 0 0 #ececec, 0 0.125em 0 0 #e0e0e0, 0 0.125em 0 0 #dedede,
+        0 0.2em 0 0 #dcdcdc, 0 0.225em 0 0 #cacaca, 0 0.225em 0.375em 0 #cecece;
+}
+
+
+/* Main Content Styling - Minimal */
+.content {
+    padding: 32px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.news-section {
+    margin-bottom: 40px;
+}
+
+.news-section h2 {
+    font-size: 20px;
+    color: #1e293b;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+}
+
+.card:hover {
+    border-color: #cbd5e1;
+}
+
+.card a {
+    text-decoration: none;
+}
+
+.card-header {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-header.general {
+    background: #3b82f6;
+}
+
+.card-header.events {
+    background: #10b981;
+}
+
+.card-header.marketplace {
+    background: #f59e0b;
+}
+
+.card-header.discussions {
+    background: #8b5cf6;
+}
+
+.category-badge {
+    background: rgba(255, 255, 255, 0.95);
+    color: #1f2937;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.article-content {
+    padding: 1.1rem;
+}
+
+.title {
+    color: #111827;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    font-weight: 600;
+}
+
+.desc {
+    margin-top: 0.5rem;
+    color: #6b7280;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+.action {
+    display: inline-flex;
+    margin-top: 1rem;
+    color: #ffffff;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    align-items: center;
+    gap: 0.25rem;
+    background-color: #2563eb;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.action span {
+    transition: 0.3s ease;
+}
+
+.action:hover span {
+    transform: translateX(4px);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .nav-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .category-header h1 {
+        font-size: 2rem;
+    }
+
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .section-subtitle {
+        margin-left: 0;
+    }
+
+    .breadcrumb {
+        flex-wrap: wrap;
+    }
+}
+
+/* Forum-specific styles */
+.forum-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.forum-topic {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.forum-topic:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.topic-info {
+    color: #333;
+}
+
+.topic-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2563eb;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.topic-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.topic-meta span {
+    display: flex;
+    align-items: center;
+}
+
+.author {
+    font-weight: 500;
+    color: #374151;
+}
+
+.category {
+    background-color: #e5e7eb;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Category-specific colors */
+.category.general {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.category.events {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.category.marketplace {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.category.discussions {
+    background-color: #f3e8ff;
+    color: #7c3aed;
+}
+
+.replies {
+    color: #059669;
+    font-weight: 500;
+}
+
+.last-activity {
+    color: #6b7280;
+    font-style: italic;
+}
+
+/* Meta info for bulletin posts */
+.meta-info {
+    margin: 8px 0;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+/* Category page styling */
+.category-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(255, 204, 0, 0.2), rgba(37, 99, 235, 0.2));
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.category-header h1 {
+    color: #000
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.category-description {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* Section headers with icons */
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.section-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-icon {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+}
+
+.section-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-left: auto;
+}
+
+.category-section {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* General page heading fallback */
+h1 {
+    color: #000
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Responsive adjustments for forum elements */
+@media (max-width: 768px) {
+    .topic-meta {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .topic-title {
+        font-size: 1.1rem;
+    }
+}

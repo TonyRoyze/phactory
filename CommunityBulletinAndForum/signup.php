@@ -4,31 +4,16 @@ include "./connector.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
+    $repass = $_POST["repassword"];
 
-    if (!empty($username) && !empty($password)) {
-        $sql = "SELECT * FROM user WHERE user_name = ?";
+    if ($password == $repass) {
+        $sql = "INSERT INTO user (user_name, pass, user_type) VALUES (?, ?, 'MEMBER')";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $username);
+        $stmt->bind_param("ss", $username, $password);
         $stmt->execute();
-        $result = $stmt->get_result();
-        $user_data = $result->fetch_assoc();
-
-        if ($user_data && $password == $user_data["pass"]) {
-            if ($user_data["user_type"] == "ADMIN") {
-                header(
-                    "location: ./admin/manage-news.php?admin_id=$user_data[user_id]"
-                );
-                exit();
-            } elseif ($user_data["user_type"] == "MEMBER") {
-                header(
-                    "location: ./home/community.php?user_id=$user_data[user_id]"
-                );
-                exit();
-            }
-        } else {
-            $errorMessage = "Username or Password is Incorrect";
-        }
     }
+
+    header("location: ./login.php");
 }
 ?>
 
@@ -37,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Login - Community Bulletin</title>
+        <title>Join Community - Community Bulletin</title>
         <link rel="stylesheet" href="login.css">
     </head>
 <body>
@@ -57,21 +42,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="form-header">
                 <div class="icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <!-- Login icon placeholder -->
-                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-                        <polyline points="10,17 15,12 10,7"></polyline>
-                        <line x1="15" y1="12" x2="3" y2="12"></line>
+                        <!-- User plus icon placeholder -->
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <line x1="19" y1="8" x2="19" y2="14"></line>
+                        <line x1="22" y1="11" x2="16" y2="11"></line>
                     </svg>
                 </div>
-                <h1 class="title">Welcome Back</h1>
-                <p class="subtitle">Sign in to your community account</p>
+                <h1 class="title">Join Our Community</h1>
+                <p class="subtitle">Create your account to get started</p>
             </div>
-
-            <?php if (isset($errorMessage)): ?>
-                <div class="error-message">
-                    <?php echo htmlspecialchars($errorMessage); ?>
-                </div>
-            <?php endif; ?>
 
             <form class="form" method="post">
                 <div class="input-group">
@@ -84,11 +64,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input id="password" name="password" type="password" class="input_field" required>
                 </div>
                 
-                <button type="submit" class="submit">Sign In</button>
+                <div class="input-group">
+                    <label for="repassword">Confirm Password</label>
+                    <input id="repassword" name="repassword" type="password" class="input_field" required>
+                </div>
+                
+                <button type="submit" class="submit">Create Account</button>
                 
                 <p class="signup-link">
-                    Don't have an account? 
-                    <a href="./signup.php">Join the community</a>
+                    Already have an account? 
+                    <a href="./login.php">Sign in</a>
                 </p>
             </form>
         </div>
