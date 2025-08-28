@@ -110,12 +110,68 @@ $attachments_result = $attachments_stmt->get_result();
         <div class="meta-item">
             <strong>Last Activity:</strong> <?= date('M j, Y g:i A', strtotime($ticket['last_activity'])) ?>
         </div>
-        <?php if ($ticket['assigned_name']): ?>
         <div class="meta-item">
-            <strong>Assigned to:</strong> <?= htmlspecialchars($ticket['assigned_name']) ?>
+            <strong>Assigned to:</strong> 
+            <?php if ($ticket['assigned_name']): ?>
+                <?php if ($_SESSION['user_role'] === 'ADMIN' && $ticket['assigned_to'] == $_SESSION['user_id']): ?>
+                    <span class="assigned-to-me"><?= htmlspecialchars($ticket['assigned_name']) ?> (You)</span>
+                <?php else: ?>
+                    <?= htmlspecialchars($ticket['assigned_name']) ?>
+                <?php endif; ?>
+            <?php else: ?>
+                <span class="unassigned">Unassigned</span>
+            <?php endif; ?>
         </div>
-        <?php endif; ?>
     </div>
+
+    <!-- Admin Controls -->
+    <?php if ($_SESSION['user_role'] === 'ADMIN'): ?>
+    <div class="admin-controls-section">
+        <h3>Admin Controls</h3>
+        <div class="admin-controls-grid">
+            <!-- Assignment Control -->
+            <div class="control-group">
+                <h4>Assignment</h4>
+                <form action="actions/assign_ticket.php" method="POST" class="inline-form">
+                    <input type="hidden" name="ticket_id" value="<?= $ticket['ticket_id'] ?>">
+                    <div class="form-row">
+                        <select name="assigned_to" class="form-select">
+                            <option value="0">Unassigned</option>
+                            <?php
+                            // Get all admin users for assignment dropdown
+                            $admin_sql = "SELECT user_id, full_name FROM users WHERE user_role = 'ADMIN' ORDER BY full_name";
+                            $admin_result = $conn->query($admin_sql);
+                            while ($admin = $admin_result->fetch_assoc()):
+                            ?>
+                                <option value="<?= $admin['user_id'] ?>" <?= ($ticket['assigned_to'] == $admin['user_id']) ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($admin['full_name']) ?>
+                                </option>
+                            <?php endwhile; ?>
+                        </select>
+                        <button type="submit" class="btn-assign">Assign</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Status Control -->
+            <div class="control-group">
+                <h4>Status</h4>
+                <form action="actions/update_status.php" method="POST" class="inline-form">
+                    <input type="hidden" name="ticket_id" value="<?= $ticket['ticket_id'] ?>">
+                    <div class="form-row">
+                        <select name="status" class="form-select">
+                            <option value="Open" <?= ($ticket['status'] === 'Open') ? 'selected' : '' ?>>Open</option>
+                            <option value="In Progress" <?= ($ticket['status'] === 'In Progress') ? 'selected' : '' ?>>In Progress</option>
+                            <option value="Resolved" <?= ($ticket['status'] === 'Resolved') ? 'selected' : '' ?>>Resolved</option>
+                            <option value="Closed" <?= ($ticket['status'] === 'Closed') ? 'selected' : '' ?>>Closed</option>
+                        </select>
+                        <button type="submit" class="btn-status">Update Status</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
 
     <!-- Original Ticket Content -->
     <div class="ticket-content-section">

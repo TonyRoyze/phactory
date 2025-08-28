@@ -22,20 +22,23 @@ $view = $_GET['view'] ?? $default_view;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Helpdesk System</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="js/search-enhanced.js"></script>
 </head>
 <body>
 
     <nav class="top-nav">
         <div class="nav-container">
             <a href="app.php" class="nav-brand">Helpdesk System</a>
-            <ul class="nav-links">
+            <ul class="nav-links" role="navigation" aria-label="Main navigation">
                 <?php if ($_SESSION['user_role'] === 'ADMIN'): ?>
-                    <li><a href="app.php?view=dashboard" class="<?= ($view === 'dashboard') ? 'active' : '' ?>">Dashboard</a></li>
-                    <li><a href="app.php?view=tickets" class="<?= ($view === 'tickets' || $view === 'ticket') ? 'active' : '' ?>">All Tickets</a></li>
-                    <li><a href="app.php?view=users" class="<?= ($view === 'users') ? 'active' : '' ?>">Manage Users</a></li>
+                    <li><a href="app.php?view=dashboard" class="<?= ($view === 'dashboard') ? 'active' : '' ?>" <?= ($view === 'dashboard') ? 'aria-current="page"' : '' ?>>Dashboard</a></li>
+                    <li><a href="app.php?view=tickets" class="<?= ($view === 'tickets' || $view === 'ticket') ? 'active' : '' ?>" <?= ($view === 'tickets' || $view === 'ticket') ? 'aria-current="page"' : '' ?>>All Tickets</a></li>
+                    <li><a href="app.php?view=search" class="<?= ($view === 'search') ? 'active' : '' ?>" <?= ($view === 'search') ? 'aria-current="page"' : '' ?>>Search</a></li>
+                    <li><a href="app.php?view=users" class="<?= ($view === 'users') ? 'active' : '' ?>" <?= ($view === 'users') ? 'aria-current="page"' : '' ?>>Manage Users</a></li>
                 <?php else: ?>
-                    <li><a href="app.php?view=my_tickets" class="<?= ($view === 'my_tickets' || $view === 'ticket') ? 'active' : '' ?>">My Tickets</a></li>
-                    <li><a href="app.php?view=create_ticket" class="<?= ($view === 'create_ticket') ? 'active' : '' ?>">Create Ticket</a></li>
+                    <li><a href="app.php?view=my_tickets" class="<?= ($view === 'my_tickets' || $view === 'ticket') ? 'active' : '' ?>" <?= ($view === 'my_tickets' || $view === 'ticket') ? 'aria-current="page"' : '' ?>>My Tickets</a></li>
+                    <li><a href="app.php?view=create_ticket" class="<?= ($view === 'create_ticket') ? 'active' : '' ?>" <?= ($view === 'create_ticket') ? 'aria-current="page"' : '' ?>>Create Ticket</a></li>
+                    <li><a href="app.php?view=search" class="<?= ($view === 'search') ? 'active' : '' ?>" <?= ($view === 'search') ? 'aria-current="page"' : '' ?>>Search</a></li>
                 <?php endif; ?>
             </ul>
             <ul class="nav-user">
@@ -47,13 +50,13 @@ $view = $_GET['view'] ?? $default_view;
     </nav>
 
     <div class="main-container">
-        <div class="container">
+        <div class="container <?= ($view === 'dashboard') ? 'dashboard-wide' : '' ?>">
             <?php
             // Based on the view parameter, include the corresponding content
             switch ($view) {
                 case 'dashboard':
                     if ($_SESSION['user_role'] === 'ADMIN') {
-                        echo "<h1>Admin Dashboard</h1><p>Dashboard functionality will be implemented in a future task.</p>";
+                        require 'views/dashboard.php';
                     } else {
                         header("Location: app.php?view=my_tickets");
                         exit();
@@ -61,7 +64,7 @@ $view = $_GET['view'] ?? $default_view;
                     break;
                 case 'tickets':
                     if ($_SESSION['user_role'] === 'ADMIN') {
-                        echo "<h1>All Tickets</h1><p>Ticket management functionality will be implemented in a future task.</p>";
+                        require 'views/tickets.php';
                     } else {
                         header("Location: app.php?view=my_tickets");
                         exit();
@@ -104,6 +107,9 @@ $view = $_GET['view'] ?? $default_view;
                     break;
                 case 'edit_profile':
                     require 'views/edit_profile.php';
+                    break;
+                case 'search':
+                    require 'views/search.php';
                     break;
                 default:
                     // Redirect to appropriate default view

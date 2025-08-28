@@ -1,75 +1,78 @@
 <?php
-// This file is actions/download_file.php - Handle secure file downloads
-
 session_start();
-require '../connector.php';
+require_once '../connector.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login.php");
-    exit();
+    http_response_code(401);
+    die('Unauthorized access');
 }
 
-// Get attachment ID
-$attachment_id = intval($_GET['id'] ?? 0);
-
-if (!$attachment_id) {
-    http_response_code(404);
-    echo "File not found.";
-    exit();
+// Check if attachment ID is provided
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    http_response_code(400);
+    die('Invalid attachment ID');
 }
 
-// Get attachment details and verify access permissions
-$sql = "SELECT a.*, t.customer_id 
-        FROM attachments a
-        LEFT JOIN tickets t ON a.ticket_id = t.ticket_id
+$attachmentId = intval($_GET['id']);
+$userId = $_SESSION['user_id'];
+
+// Get attachment information and verify access
+$sql = "SELECT a.*, t.customer_id, u.user_role 
+        FROM attachments a 
+        JOIN tickets t ON a.ticket_id = t.ticket_id 
+        JOIN users u ON u.user_id = ? 
         WHERE a.attachment_id = ?";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param('i', $attachment_id);
+$stmt->bind_param("ii", $userId, $attachmentId);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows === 0) {
     http_response_code(404);
-    echo "File not found.";
-    exit();
+    die('Attachment not found');
 }
 
 $attachment = $result->fetch_assoc();
 
-// Check access permissions
-$can_download = false;
-if ($_SESSION['user_role'] === 'ADMIN') {
-    $can_download = true; // Admins can download all files
-} elseif ($_SESSION['user_role'] === 'CUSTOMER' && $attachment['customer_id'] == $_SESSION['user_id']) {
-    $can_download = true; // Customers can only download files from their own tickets
-}
-
-if (!$can_download) {
+// Check if user has permission to download this file
+// Customers can only download files from their own tickets, admins can download any file
+if ($attachment['user_role'] !== 'ADMIN' && $attachment['customer_id'] != $userId) {
     http_response_code(403);
-    echo "Access denied.";
-    exit();
+    die('Access denied');
 }
 
 // Build file path
-$file_path = '../uploads/' . $attachment['filename'];
+$filePath = '../uploads/' . $attachment['filename'];
 
-// Check if file exists
-if (!file_exists($file_path)) {
+// Check if file exists on disk
+if (!file_exists($filePath)) {
     http_response_code(404);
-    echo "File not found on server.";
-    exit();
+    die('File not found on server');
 }
 
-// Set headers for file download
+// Verify file integrity (optional security check)
+if (filesize($filePath) !== intval($attachment['file_size'])) {
+    http_response_code(500);
+    die('File integrity check failed');
+}
+
+// Set appropriate headers for file download
 header('Content-Type: ' . $attachment['mime_type']);
 header('Content-Disposition: attachment; filename="' . $attachment['original_filename'] . '"');
 header('Content-Length: ' . $attachment['file_size']);
 header('Cache-Control: no-cache, must-revalidate');
+header('Pragma: no-cache');
 header('Expires: 0');
 
+// Prevent any output before file content
+ob_clean();
+flush();
+
 // Output file content
-readfile($file_path);
+readfile($filePath);
+
+$conn->close();
 exit();
 ?>
