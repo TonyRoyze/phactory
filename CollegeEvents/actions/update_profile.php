@@ -21,10 +21,9 @@ $params = [$username, $email];
 
 // Add password to update if provided
 if (!empty($password)) {
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     $sql .= ", password = ? ";
     $types .= "s";
-    $params[] = $hashed_password;
+    $params[] = $password;
 }
 
 $sql .= " WHERE id = ?";

@@ -13,7 +13,7 @@ CREATE TABLE `users` (
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `role` varchar(255) NOT NULL DEFAULT 'user',
+  `role` varchar(255) NOT NULL DEFAULT 'USER',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -94,11 +94,11 @@ ALTER TABLE `comments`
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `role`) VALUES
-(1, 'admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@college.edu', 'ADMIN'),
-(2, 'john_doe', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'john.doe@student.college.edu', 'USER'),
-(3, 'jane_smith', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'jane.smith@student.college.edu', 'USER'),
-(4, 'prof_wilson', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'wilson@college.edu', 'ADMIN'),
-(5, 'sarah_jones', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'sarah.jones@student.college.edu', 'USER');
+(1, 'admin', 'admin123', 'admin@college.edu', 'ADMIN'),
+(2, 'john_doe', 'john123', 'john.doe@student.college.edu', 'USER'),
+(3, 'jane_smith', 'jane123', 'jane.smith@student.college.edu', 'USER'),
+(4, 'prof_wilson', 'wil123', 'wilson@college.edu', 'ADMIN'),
+(5, 'sarah_jones', 'sarah123', 'sarah.jones@student.college.edu', 'USER');
 
 --
 -- Dumping data for table `events`
@@ -116,5 +116,4 @@ INSERT INTO `events` (`title`, `description`, `location`, `date`, `user_id`) VAL
 --
 
 INSERT INTO `rsvps` (`id`, `event_id`, `user_id`) VALUES
-(1, 1, 2),
-(2, 1,
+(1, 1, 2);

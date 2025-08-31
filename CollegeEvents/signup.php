@@ -27,10 +27,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             // Insert new user (default to user role)
             $role = 'user';
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             $sql = "INSERT INTO users (username, password, email, role) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ssss", $username, $hashed_password, $email, $role);
+            $stmt->bind_param("ssss", $username, $password, $email, $role);
 
             if ($stmt->execute()) {
                 // Log the user in and redirect to home page (app.php)
