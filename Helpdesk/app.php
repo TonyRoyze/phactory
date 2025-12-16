@@ -4,8 +4,10 @@ session_start();
 
 require 'connector.php';
 
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
+// Check if user is logged in and has required session data
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || !isset($_SESSION['full_name'])) {
+    // Clear corrupted session and redirect to login
+    session_destroy();
     header("Location: login.php");
     exit();
 }
@@ -30,7 +32,7 @@ $view = $_GET['view'] ?? $default_view;
         <div class="nav-container">
             <a href="app.php" class="nav-brand">Helpdesk System</a>
             <ul class="nav-links" role="navigation" aria-label="Main navigation">
-                <?php if ($_SESSION['user_role'] === 'ADMIN'): ?>
+                <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'ADMIN'): ?>
                     <li><a href="app.php?view=dashboard" class="<?= ($view === 'dashboard') ? 'active' : '' ?>" <?= ($view === 'dashboard') ? 'aria-current="page"' : '' ?>>Dashboard</a></li>
                     <li><a href="app.php?view=tickets" class="<?= ($view === 'tickets' || $view === 'ticket') ? 'active' : '' ?>" <?= ($view === 'tickets' || $view === 'ticket') ? 'aria-current="page"' : '' ?>>All Tickets</a></li>
                     <li><a href="app.php?view=search" class="<?= ($view === 'search') ? 'active' : '' ?>" <?= ($view === 'search') ? 'aria-current="page"' : '' ?>>Search</a></li>
@@ -42,7 +44,7 @@ $view = $_GET['view'] ?? $default_view;
                 <?php endif; ?>
             </ul>
             <ul class="nav-user">
-                <li><span class="user-welcome">Welcome, <?= htmlspecialchars($_SESSION['full_name']) ?></span></li>
+                <li><span class="user-welcome">Welcome, <?= htmlspecialchars($_SESSION['full_name'] ?? 'User') ?></span></li>
                 <li><a href="app.php?view=edit_profile" class="<?= ($view === 'edit_profile') ? 'active' : '' ?>">Edit Profile</a></li>
                 <li><a href="logout.php" class="btn-signup">Logout</a></li>
             </ul>
@@ -55,7 +57,7 @@ $view = $_GET['view'] ?? $default_view;
             // Based on the view parameter, include the corresponding content
             switch ($view) {
                 case 'dashboard':
-                    if ($_SESSION['user_role'] === 'ADMIN') {
+                    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'ADMIN') {
                         require 'views/dashboard.php';
                     } else {
                         header("Location: app.php?view=my_tickets");
@@ -63,7 +65,7 @@ $view = $_GET['view'] ?? $default_view;
                     }
                     break;
                 case 'tickets':
-                    if ($_SESSION['user_role'] === 'ADMIN') {
+                    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'ADMIN') {
                         require 'views/tickets.php';
                     } else {
                         header("Location: app.php?view=my_tickets");
@@ -71,7 +73,7 @@ $view = $_GET['view'] ?? $default_view;
                     }
                     break;
                 case 'my_tickets':
-                    if ($_SESSION['user_role'] === 'CUSTOMER') {
+                    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'CUSTOMER') {
                         require 'views/my_tickets.php';
                     } else {
                         header("Location: app.php?view=dashboard");
@@ -79,7 +81,7 @@ $view = $_GET['view'] ?? $default_view;
                     }
                     break;
                 case 'create_ticket':
-                    if ($_SESSION['user_role'] === 'CUSTOMER') {
+                    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'CUSTOMER') {
                         require 'views/create_ticket.php';
                     } else {
                         header("Location: app.php?view=dashboard");
@@ -90,7 +92,7 @@ $view = $_GET['view'] ?? $default_view;
                     require 'views/ticket.php';
                     break;
                 case 'users':
-                    if ($_SESSION['user_role'] === 'ADMIN') {
+                    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'ADMIN') {
                         require 'views/users.php';
                     } else {
                         header("Location: app.php?view=my_tickets");
@@ -98,7 +100,7 @@ $view = $_GET['view'] ?? $default_view;
                     }
                     break;
                 case 'edit_user':
-                    if ($_SESSION['user_role'] === 'ADMIN') {
+                    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'ADMIN') {
                         require 'views/edit_user.php';
                     } else {
                         header("Location: app.php?view=my_tickets");
@@ -113,7 +115,7 @@ $view = $_GET['view'] ?? $default_view;
                     break;
                 default:
                     // Redirect to appropriate default view
-                    $redirect_view = ($_SESSION['user_role'] === 'ADMIN') ? 'dashboard' : 'my_tickets';
+                    $redirect_view = (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'ADMIN') ? 'dashboard' : 'my_tickets';
                     header("Location: app.php?view=" . $redirect_view);
                     exit();
                     break;
