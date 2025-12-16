@@ -35,11 +35,20 @@ if ($category_filter !== 'All') {
 }
 
 if (!empty($search_term)) {
-    $where_clauses[] = "(t.title LIKE ? OR t.description LIKE ?)";
+    // Enhanced search including replies (only public replies for customers)
+    $reply_subquery = "EXISTS (
+        SELECT 1 FROM ticket_replies tr 
+        WHERE tr.ticket_id = t.ticket_id 
+        AND tr.content LIKE ?
+        AND tr.is_internal = FALSE
+    )";
+    
+    $where_clauses[] = "(t.title LIKE ? OR t.description LIKE ? OR {$reply_subquery})";
     $search_param = "%{$search_term}%";
-    $params[] = $search_param;
-    $params[] = $search_param;
-    $types .= 'ss';
+    $params[] = $search_param; // for title
+    $params[] = $search_param; // for description
+    $params[] = $search_param; // for reply subquery
+    $types .= 'sss';
 }
 
 $where_sql = implode(' AND ', $where_clauses);
@@ -84,8 +93,9 @@ echo '<form action="app.php" method="GET" class="search-form">';
 echo '    <input type="hidden" name="view" value="my_tickets">';
 if ($status_filter !== 'All') echo '    <input type="hidden" name="status" value="' . htmlspecialchars($status_filter) . '">';
 if ($category_filter !== 'All') echo '    <input type="hidden" name="category" value="' . htmlspecialchars($category_filter) . '">';
-echo '    <input type="text" name="search" placeholder="Search your tickets..." value="' . htmlspecialchars($search_term) . '">';
+echo '    <input type="text" name="search" class="search-input" placeholder="Search your tickets..." value="' . htmlspecialchars($search_term) . '" autocomplete="off">';
 echo '    <button type="submit">Search</button>';
+echo '    <a href="app.php?view=search" class="btn-advanced-search-link">Advanced Search</a>';
 echo '</form>';
 
 // Filter pills container
